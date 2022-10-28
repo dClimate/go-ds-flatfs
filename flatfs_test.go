@@ -20,7 +20,7 @@ import (
 	"github.com/ipfs/go-datastore/query"
 	dstest "github.com/ipfs/go-datastore/test"
 
-	flatfs "github.com/ipfs/go-ds-flatfs"
+	flatfs "github.com/eschechter/go-ds-flatfs"
 )
 
 var bg = context.Background()

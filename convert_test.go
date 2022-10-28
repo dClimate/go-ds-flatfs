@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/ipfs/go-datastore"
-	flatfs "github.com/ipfs/go-ds-flatfs"
+	flatfs "github.com/eschechter/go-ds-flatfs"
 )
 
 func TestMove(t *testing.T) {

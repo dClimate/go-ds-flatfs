@@ -9,7 +9,7 @@ import (
 
 // rename behaves like os.Rename but can rename files across directories.
 func rename(oldpath, newpath string) error {
-	err := os.Rename(oldpath, newpath)
+	err := MoveFile(oldpath, newpath)
 	if le, ok := err.(*os.LinkError); !ok || le.Err != os.ErrInvalid {
 		return err
 	}
@@ -59,6 +59,30 @@ func rename(oldpath, newpath string) error {
 
 	if err := os.Remove(oldpath); err != nil {
 		return &os.LinkError{"rename", oldpath, newpath, err}
+	}
+	return nil
+}
+
+func MoveFile(sourcePath, destPath string) error {
+	inputFile, err := os.Open(sourcePath)
+	if err != nil {
+		return fmt.Errorf("couldn't open source file: %s", err)
+	}
+	outputFile, err := os.Create(destPath)
+	if err != nil {
+		inputFile.Close()
+		return fmt.Errorf("couldn't open dest file: %s", err)
+	}
+	defer outputFile.Close()
+	_, err = io.Copy(outputFile, inputFile)
+	inputFile.Close()
+	if err != nil {
+		return fmt.Errorf("writing to output file failed: %s", err)
+	}
+	// The copy was successful, so now delete the original file
+	err = os.Remove(sourcePath)
+	if err != nil {
+		return fmt.Errorf("failed removing original file: %s", err)
 	}
 	return nil
 }
