@@ -1,4 +1,4 @@
-module github.com/ipfs/go-ds-flatfs
+module github.com/eschechter/go-ds-flatfs
 
 require (
 	github.com/alexbrainman/goissue34681 v0.0.0-20191006012335-3fc7a47baff5
