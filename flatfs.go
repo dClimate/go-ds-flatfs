@@ -809,7 +809,7 @@ func (fs *Datastore) walkTopLevel(ctx context.Context, path string, result *quer
 	}
 	for _, entry := range entries {
 
-		if !entry.IsDir() {
+		if !entry.IsDir() && !(entry.Mode()&os.ModeSymlink == os.ModeSymlink) {
 			continue
 		}
 		dir := entry.Name()
