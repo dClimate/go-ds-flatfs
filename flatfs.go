@@ -814,10 +814,11 @@ func (fs *Datastore) walkTopLevel(ctx context.Context, path string, result *quer
 		}
 		dir := entry.Name()
 		if entry.Mode()&os.ModeSymlink == os.ModeSymlink {
-			dir, err = filepath.EvalSymlinks(dir)
+			full_dir, err := filepath.EvalSymlinks(filepath.Join(path, dir))
 			if err != nil {
 				return err
 			}
+			dir = filepath.Base(full_dir)
 		}
 
 		if len(dir) == 0 || dir[0] == '.' {
