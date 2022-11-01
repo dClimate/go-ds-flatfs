@@ -13,12 +13,14 @@ func MoveFile(sourcePath, destPath string) error {
 	if err != nil {
 		return fmt.Errorf("couldn't open source file: %s", err)
 	}
+	originalPermissions, _ := inputFile.Stat()
 	outputFile, err := os.Create(destPath)
 	if err != nil {
 		inputFile.Close()
 		return fmt.Errorf("couldn't open dest file: %s", err)
 	}
 	defer outputFile.Close()
+	outputFile.Chmod(originalPermissions.Mode())
 	_, err = io.Copy(outputFile, inputFile)
 	inputFile.Close()
 	if err != nil {
