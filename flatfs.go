@@ -808,13 +808,12 @@ func (fs *Datastore) walkTopLevel(ctx context.Context, path string, result *quer
 		return err
 	}
 	for _, entry := range entries {
-
 		if !entry.IsDir() && !(entry.Mode()&os.ModeSymlink == os.ModeSymlink) {
 			continue
 		}
 		dir := entry.Name()
 		if entry.Mode()&os.ModeSymlink == os.ModeSymlink {
-			full_dir, err := filepath.EvalSymlinks(filepath.Join(path, dir))
+			full_dir, err := os.Readlink(filepath.Join(path, dir))
 			if err != nil {
 				return err
 			}
